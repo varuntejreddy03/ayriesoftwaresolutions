@@ -1,118 +1,125 @@
-import client from '../client.json'
+import useReveal from '../hooks/useReveal'
 
 export default function About() {
-  return (
-    <main>
+  const revealRef = useReveal()
 
-      {/* Hero */}
-      <section style={{ padding:'72px 0 64px', background:'var(--bg-2)', borderBottom:'1px solid var(--border)' }}>
-        <div className="container" style={{ textAlign:'center' }}>
-          <p className="label" style={{ marginBottom:'12px' }}>Our Story</p>
-          <h1 className="heading-1" style={{ marginBottom:'20px' }}>
-            About <span className="gradient-text">{client.businessName}</span>
+  return (
+    <main ref={revealRef}>
+
+      {/* ── PAGE HERO ── */}
+      <section style={{ padding: '80px 0 72px', background: '#0D0D0D', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(249,115,22,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="container" style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <p className="label animate-fade-up" style={{ marginBottom: '16px' }}>Our Story</p>
+          <h1 className="heading-1 animate-fade-up delay-1" style={{ marginBottom: '16px' }}>
+            Who We <span style={{ position: 'relative', display: 'inline-block' }}>
+              Are
+              <span style={{ position: 'absolute', bottom: '-6px', left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg,#F97316,#D97706)', borderRadius: '2px' }} />
+            </span>
           </h1>
-          <p className="body-lg" style={{ maxWidth:'520px', margin:'0 auto' }}>
-            Learn who we are, what drives us, and why clients trust us.
+          <p className="body-lg animate-fade-up delay-2" style={{ maxWidth: '560px', margin: '24px auto 0' }}>
+            Ayrie Software Solutions is a premium Salesforce, AI, Data & ML company based in Bangalore — helping enterprises build smarter, faster, and more intelligently.
           </p>
         </div>
       </section>
 
-      {/* Story */}
+      {/* ── MISSION ── */}
       <section className="section">
         <div className="container">
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'80px', alignItems:'center' }}>
-            <div>
-              <p className="label" style={{ marginBottom:'12px' }}>Who We Are</p>
-              <h2 className="heading-2" style={{ marginBottom:'20px' }}>Built on trust, driven by results</h2>
-              <p style={{ fontSize:'16px', lineHeight:1.85, color:'var(--text-2)', marginBottom:'20px' }}>
-                {client.about || `${client.businessName} is a dedicated team of professionals committed to delivering exceptional results.`}
+          <div className="mission-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '72px', alignItems: 'center' }}>
+            <div className="reveal">
+              <p className="label" style={{ marginBottom: '16px' }}>Our Mission</p>
+              <h2 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 800, lineHeight: 1.1, color: '#F5F5F5', marginBottom: '0' }}>
+                "Empowering businesses through{' '}
+                <span className="gradient-text">intelligent technology</span>{' '}
+                that scales."
+              </h2>
+            </div>
+            <div className="reveal reveal-delay-2">
+              <p style={{ fontSize: '16px', lineHeight: 1.85, color: '#D1D5DB', marginBottom: '20px' }}>
+                Ayrie Software Solutions provides Salesforce, AI, Data, and Machine Learning based software solutions and custom development services.
               </p>
-              <p style={{ fontSize:'15px', lineHeight:1.8, color:'var(--muted)' }}>
-                From day one, our focus has been simple: understand what our clients truly need and deliver it with excellence.
+              <p style={{ fontSize: '15px', lineHeight: 1.8, color: '#9CA3AF' }}>
+                We help businesses streamline their operations, build intelligent applications, and unlock insights from their data through modern, scalable technology. From day one, our focus has been simple: understand what our clients truly need and deliver it with excellence.
               </p>
             </div>
-            {/* right: about image or stat cards */}
-            {client.hasAboutImage
-              ? <div style={{ borderRadius:'var(--radius-xl)', overflow:'hidden', boxShadow:'var(--shadow-lg)', aspectRatio:'4/3' }}>
-                  <img src={`/${client.aboutImageFile}`} alt={client.businessName} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                </div>
-              : <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
-                  {[
-                    {icon:'🏆', label:'Award Winning',  sub:'Recognized excellence'},
-                    {icon:'👥', label:'Expert Team',    sub:'Skilled professionals'},
-                    {icon:'📍', label:'Local Presence', sub: client.address || 'Serving your area'},
-                    {icon:'💬', label:'Always Here',    sub:'Responsive support'},
-                  ].map((item,i) => (
-                    <div key={i} className="card" style={{ textAlign:'center', padding:'28px 20px' }}>
-                      <div style={{ fontSize:'32px', marginBottom:'10px' }}>{item.icon}</div>
-                      <p style={{ fontWeight:700, fontSize:'14px', color:'var(--text)', marginBottom:'4px' }}>{item.label}</p>
-                      <p style={{ fontSize:'12px', color:'var(--muted)' }}>{item.sub}</p>
-                    </div>
-                  ))}
-                </div>
-            }
           </div>
         </div>
       </section>
 
-      {/* Values */}
-      <section className="section" style={{ background:'var(--bg-2)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
+      {/* ── WHY CHOOSE US ── */}
+      <section className="section" style={{ background: '#111', borderTop: '1px solid rgba(249,115,22,0.08)', borderBottom: '1px solid rgba(249,115,22,0.08)' }}>
         <div className="container">
-          <div style={{ textAlign:'center', marginBottom:'56px' }}>
-            <p className="label" style={{ marginBottom:'12px' }}>Our Values</p>
-            <h2 className="heading-2">What we stand for</h2>
+          <div className="reveal" style={{ textAlign: 'center', marginBottom: '56px' }}>
+            <p className="label" style={{ marginBottom: '12px' }}>Why Choose Us</p>
+            <h2 className="heading-1">
+              We deliver results,{' '}
+              <span className="gradient-text">not just promises</span>
+            </h2>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:'24px' }}>
-            {[
-              {icon:'🎯', title:'Mission Driven',   desc:"Every action we take is aligned with delivering real value to our clients."},
-              {icon:'💎', title:'Quality First',    desc:"We never compromise on quality — it's the foundation of everything we do."},
-              {icon:'🤝', title:'Client Focused',   desc:'Your success is our success. We treat every client like a long-term partner.'},
-              {icon:'🚀', title:'Always Improving', desc:'We continuously evolve our skills and processes to stay ahead.'},
-            ].map((v,i) => (
-              <div key={i} className="card" style={{ display:'flex', flexDirection:'column', gap:'14px' }}>
-                <div className="icon-box icon-box-lg">{v.icon}</div>
-                <h3 className="heading-3">{v.title}</h3>
-                <p className="body-md">{v.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Hours */}
-      {(client.hoursMF || client.hoursSat || client.hoursSun) && (
-        <section className="section">
-          <div className="container">
-            <div style={{ maxWidth:'520px', margin:'0 auto' }}>
-              <div style={{ textAlign:'center', marginBottom:'40px' }}>
-                <p className="label" style={{ marginBottom:'12px' }}>Availability</p>
-                <h2 className="heading-2">Business Hours</h2>
+          <div className="about-why" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+            {/* Feature rows */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+              {[
+                { icon: '⚡', title: 'Fast & Efficient',  desc: 'We respect your time and deliver on schedule. No delays, no excuses — just results.' },
+                { icon: '🎯', title: 'Results Focused',   desc: 'Every decision is driven by your goals. We measure success by your outcomes, not our effort.' },
+                { icon: '💛', title: 'Always Available',  desc: 'Dedicated support whenever you need us. Our team is reachable and responsive.' },
+              ].map((f, i) => (
+                <div key={i} className={`reveal reveal-delay-${i + 1}`} style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', padding: '24px', background: '#161616', borderRadius: '16px', border: '1px solid rgba(249,115,22,0.1)', transition: 'border-color 0.3s' }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(249,115,22,0.35)'}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(249,115,22,0.1)'}
+                >
+                  <div className="icon-box" style={{ flexShrink: 0, fontSize: '22px' }}>{f.icon}</div>
+                  <div>
+                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, color: '#F5F5F5', marginBottom: '6px', fontSize: '17px' }}>{f.title}</p>
+                    <p className="body-md">{f.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Trusted card */}
+            <div className="reveal reveal-delay-2" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className="card-glass" style={{ padding: '32px' }}>
+                <p className="label" style={{ marginBottom: '16px' }}>Trusted by Clients</p>
+                <div style={{ display: 'flex', marginBottom: '20px' }}>
+                  {['🧑','👩','👨','🧑','👩'].map((e, i) => (
+                    <div key={i} style={{ width: '40px', height: '40px', borderRadius: '50%', background: `hsl(${i * 40},40%,20%)`, border: '2px solid #161616', marginLeft: i > 0 ? '-10px' : '0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>{e}</div>
+                  ))}
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#F97316', border: '2px solid #161616', marginLeft: '-10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, color: '#fff' }}>+95</div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '14px 18px', background: 'rgba(249,115,22,0.08)', borderRadius: '10px', border: '1px solid rgba(249,115,22,0.15)' }}>
+                  <span style={{ fontSize: '22px' }}>⭐</span>
+                  <div>
+                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '20px', color: '#F97316' }}>5.0 ★ Average Rating</p>
+                    <p style={{ fontSize: '12px', color: '#9CA3AF' }}>Based on client feedback</p>
+                  </div>
+                </div>
               </div>
-              <div className="card" style={{ padding:'40px' }}>
+
+              {/* Business Hours */}
+              <div className="card-glass" style={{ padding: '28px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                  <span style={{ fontSize: '22px', color: '#F97316' }}>🕐</span>
+                  <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '16px', color: '#F5F5F5' }}>Business Hours</p>
+                </div>
                 {[
-                  {label:'Monday – Friday', value:client.hoursMF},
-                  {label:'Saturday',        value:client.hoursSat},
-                  {label:'Sunday',          value:client.hoursSun},
-                ].filter(h => h.value).map((h,i,arr) => (
-                  <div key={i} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'16px 0', borderBottom: i < arr.length-1 ? '1px solid var(--border)' : 'none' }}>
-                    <span style={{ fontSize:'15px', color:'var(--text-2)', fontWeight:500 }}>{h.label}</span>
-                    <span style={{ fontSize:'14px', fontWeight:600, color:'var(--primary)', background:'var(--primary-light)', padding:'4px 12px', borderRadius:'999px' }}>{h.value}</span>
+                  { label: 'Monday – Friday', value: '9:00 AM – 7:00 PM', active: true },
+                  { label: 'Saturday',         value: 'Holiday',           active: false },
+                  { label: 'Sunday',           value: 'Holiday',           active: false },
+                ].map((h, i, arr) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                    <span style={{ fontSize: '14px', color: '#D1D5DB' }}>{h.label}</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: h.active ? '#F97316' : '#6B7280', background: h.active ? 'rgba(249,115,22,0.1)' : 'rgba(255,255,255,0.04)', padding: '3px 10px', borderRadius: '999px' }}>{h.value}</span>
                   </div>
                 ))}
               </div>
-              {(client.phone || client.email) && (
-                <div style={{ textAlign:'center', marginTop:'28px' }}>
-                  <p className="body-md" style={{ marginBottom:'16px' }}>Need to reach us outside hours?</p>
-                  <div style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap' }}>
-                    {client.phone && <a href={`tel:${client.phone}`} className="btn btn-outline">{client.phone}</a>}
-                    {client.email && <a href={`mailto:${client.email}`} className="btn btn-primary">{client.email}</a>}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
-        </section>
-      )}
+        </div>
+        <style>{`@media(max-width:768px){.mission-grid,.about-why{grid-template-columns:1fr!important;gap:40px!important}}`}</style>
+      </section>
 
     </main>
   )

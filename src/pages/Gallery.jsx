@@ -1,101 +1,182 @@
 import { useState } from 'react'
-import client from '../client.json'
+import useReveal from '../hooks/useReveal'
 
-const placeholders = [
-  {span:2, emoji:'🏢', label:'Our Workspace'},
-  {span:1, emoji:'🎨', label:'Creative Work'},
-  {span:1, emoji:'🤝', label:'Client Meeting'},
-  {span:1, emoji:'🚀', label:'Project Launch'},
-  {span:1, emoji:'💼', label:'Our Team'},
-  {span:2, emoji:'🌟', label:'Featured Work'},
-  {span:1, emoji:'📸', label:'Behind the Scenes'},
-  {span:1, emoji:'🏆', label:'Awards'},
+const FILTERS = ['All', 'Salesforce', 'AI/ML', 'Data', 'Software']
+
+const PROJECTS = [
+  {
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
+    label: 'Salesforce Solutions',
+    tags: ['Salesforce'],
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80',
+    label: 'AI Development',
+    tags: ['AI/ML'],
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
+    label: 'Data Analytics',
+    tags: ['Data'],
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80',
+    label: 'Software Engineering',
+    tags: ['Software'],
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80',
+    label: 'Machine Learning',
+    tags: ['AI/ML', 'Data'],
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80',
+    label: 'Team Collaboration',
+    tags: ['Software', 'Salesforce'],
+  },
 ]
 
-// assign span pattern to real images for visual variety
-const spanPattern = [2,1,1,1,1,2,1,1]
+function GalleryCard({ p, i }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        borderRadius: '20px',
+        overflow: 'hidden',
+        position: 'relative',
+        cursor: 'pointer',
+        aspectRatio: '4/3',
+        background: '#161616',
+        border: `1px solid ${hovered ? 'rgba(249,115,22,0.45)' : 'rgba(249,115,22,0.1)'}`,
+        transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+        boxShadow: hovered ? '0 0 30px rgba(249,115,22,0.15)' : 'none',
+      }}
+    >
+      {/* Image */}
+      <img
+        src={p.img}
+        alt={p.label}
+        style={{
+          width: '100%', height: '100%',
+          objectFit: 'cover',
+          transition: 'transform 0.4s ease',
+          transform: hovered ? 'scale(1.07)' : 'scale(1)',
+          display: 'block',
+        }}
+      />
+
+      {/* Hover overlay */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(160deg, rgba(249,115,22,0.55) 0%, rgba(13,13,13,0.88) 100%)',
+        opacity: hovered ? 1 : 0,
+        transition: 'opacity 0.35s ease',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', gap: '12px',
+        padding: '24px',
+      }}>
+        <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '18px', color: '#fff', textAlign: 'center' }}>{p.label}</p>
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {p.tags.map(t => (
+            <span key={t} style={{ padding: '4px 12px', borderRadius: '999px', fontSize: '11px', fontWeight: 600, background: 'rgba(249,115,22,0.25)', color: '#FBBF24', border: '1px solid rgba(249,115,22,0.4)' }}>{t}</span>
+          ))}
+        </div>
+        <span style={{ fontSize: '13px', fontWeight: 600, color: '#fff', marginTop: '4px', opacity: 0.85 }}>View Project →</span>
+      </div>
+
+      {/* Always-visible bottom label */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        padding: '20px 18px 16px',
+        background: 'linear-gradient(to top, rgba(10,10,10,0.92) 0%, transparent 100%)',
+        opacity: hovered ? 0 : 1,
+        transition: 'opacity 0.3s ease',
+      }}>
+        <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, fontSize: '14px', color: '#F5F5F5', marginBottom: '5px' }}>{p.label}</p>
+        <div style={{ display: 'flex', gap: '5px' }}>
+          {p.tags.map(t => (
+            <span key={t} style={{ fontSize: '11px', color: '#F97316', fontWeight: 500 }}>{t}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function Gallery() {
-  const [hovered, setHovered] = useState(null)
-  const hasImages = client.galleryImages && client.galleryImages.length > 0
-  const items = hasImages ? client.galleryImages : placeholders
+  const [activeFilter, setActiveFilter] = useState('All')
+  const revealRef = useReveal()
+
+  const filtered = activeFilter === 'All'
+    ? PROJECTS
+    : PROJECTS.filter(p => p.tags.includes(activeFilter))
 
   return (
-    <main>
+    <main ref={revealRef}>
 
-      {/* Hero */}
-      <section style={{ padding:'72px 0 64px', background:'var(--bg-2)', borderBottom:'1px solid var(--border)' }}>
-        <div className="container" style={{ textAlign:'center' }}>
-          <p className="label" style={{ marginBottom:'12px' }}>Our Work</p>
-          <h1 className="heading-1" style={{ marginBottom:'20px' }}>
-            <span className="gradient-text">Gallery</span>
-          </h1>
-          <p className="body-lg" style={{ maxWidth:'480px', margin:'0 auto' }}>
-            A glimpse into our work, our team, and the results we deliver.
+      {/* ── PAGE HERO ── */}
+      <section style={{ padding: '80px 0 72px', background: '#0D0D0D', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(249,115,22,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="container" style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <p className="label animate-fade-up" style={{ marginBottom: '16px' }}>OUR WORK</p>
+          <h1 className="heading-1 animate-fade-up delay-1" style={{ marginBottom: '16px' }}>Gallery</h1>
+          <p className="body-lg animate-fade-up delay-2" style={{ maxWidth: '440px', margin: '0 auto' }}>
+            A showcase of our solutions and expertise.
           </p>
         </div>
       </section>
 
-      {/* Grid */}
-      <section className="section">
+      {/* ── FILTER TABS ── */}
+      <section style={{ padding: '40px 0 0', background: '#0D0D0D' }}>
         <div className="container">
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gridAutoRows:'240px', gap:'16px' }}>
-            {items.map((item, i) => {
-              const isReal   = hasImages
-              const spanVal  = isReal ? spanPattern[i % spanPattern.length] : item.span
-              const imgSrc   = isReal ? `/${item}` : null
-              const label    = isReal ? `Photo ${i+1}` : item.label
-              const emoji    = isReal ? null : item.emoji
-
-              return (
-                <div key={i}
-                  onMouseEnter={() => setHovered(i)}
-                  onMouseLeave={() => setHovered(null)}
-                  style={{
-                    gridColumn: spanVal === 2 ? 'span 2' : 'span 1',
-                    borderRadius:'var(--radius-lg)',
-                    background: isReal ? '#111' : `hsl(${i*37},25%,94%)`,
-                    border:'1px solid var(--border)',
-                    display:'flex', alignItems:'center', justifyContent:'center',
-                    position:'relative', overflow:'hidden', cursor:'pointer',
-                    transition:'transform 0.2s, box-shadow 0.2s',
-                    transform: hovered===i ? 'scale(1.01)' : 'scale(1)',
-                    boxShadow: hovered===i ? 'var(--shadow-lg)' : 'var(--shadow-sm)',
-                  }}>
-
-                  {/* real image */}
-                  {isReal && (
-                    <img src={imgSrc} alt={label} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.3s', transform: hovered===i ? 'scale(1.05)' : 'scale(1)' }} />
-                  )}
-
-                  {/* placeholder emoji */}
-                  {!isReal && <span style={{ fontSize:'56px', opacity:0.4 }}>{emoji}</span>}
-
-                  {/* hover overlay */}
-                  <div style={{
-                    position:'absolute', inset:0,
-                    background:'rgba(0,0,0,0.55)',
-                    display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'8px',
-                    opacity: hovered===i ? 1 : 0, transition:'opacity 0.2s',
-                  }}>
-                    {!isReal && <span style={{ fontSize:'28px' }}>{emoji}</span>}
-                    <p style={{ color:'#fff', fontWeight:600, fontSize:'15px' }}>{label}</p>
-                    {!isReal && <p style={{ color:'rgba(255,255,255,0.7)', fontSize:'12px' }}>Replace with your photo</p>}
-                  </div>
-                </div>
-              )
-            })}
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {FILTERS.map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)}
+                style={{
+                  padding: '9px 22px', borderRadius: '999px', fontSize: '14px', fontWeight: 600,
+                  fontFamily: 'Inter, sans-serif',
+                  border: `1px solid ${activeFilter === f ? '#F97316' : 'rgba(249,115,22,0.2)'}`,
+                  background: activeFilter === f ? 'rgba(249,115,22,0.12)' : 'transparent',
+                  color: activeFilter === f ? '#F97316' : '#9CA3AF',
+                  cursor: 'pointer', transition: 'all 0.25s',
+                  borderBottom: activeFilter === f ? '2px solid #F97316' : '1px solid rgba(249,115,22,0.2)',
+                }}
+                onMouseEnter={e => { if (activeFilter !== f) e.currentTarget.style.color = '#F5F5F5' }}
+                onMouseLeave={e => { if (activeFilter !== f) e.currentTarget.style.color = '#9CA3AF' }}
+              >
+                {f}
+              </button>
+            ))}
           </div>
+        </div>
+      </section>
 
-          {/* hint only shown when no real images */}
-          {!hasImages && (
-            <div className="card" style={{ marginTop:'40px', background:'var(--primary-light)', border:'1px solid rgba(0,0,0,0.06)', textAlign:'center', padding:'32px' }}>
-              <p style={{ fontSize:'20px', marginBottom:'8px' }}>📸</p>
-              <p style={{ fontWeight:600, color:'var(--text)', marginBottom:'6px' }}>No gallery images uploaded</p>
-              <p className="body-md">Upload photos via the intake form, or add <code style={{ background:'rgba(0,0,0,0.06)', padding:'2px 6px', borderRadius:'4px', fontSize:'13px' }}>&lt;img&gt;</code> tags pointing to images in <code style={{ background:'rgba(0,0,0,0.06)', padding:'2px 6px', borderRadius:'4px', fontSize:'13px' }}>/public</code>.</p>
+      {/* ── GRID ── */}
+      <section className="section" style={{ paddingTop: '40px' }}>
+        <div className="container">
+          {filtered.length === 0 ? (
+            <div className="reveal" style={{ textAlign: 'center', padding: '80px 0' }}>
+              <div style={{ fontSize: '56px', marginBottom: '20px' }}>🚀</div>
+              <h2 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '28px', fontWeight: 700, color: '#F5F5F5', marginBottom: '10px' }}>Coming Soon</h2>
+              <p className="body-lg">Projects in this category are on their way.</p>
+            </div>
+          ) : (
+            <div className="gallery-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '20px' }}>
+              {filtered.map((p, i) => (
+                <div key={`${activeFilter}-${i}`} className={`reveal reveal-delay-${(i % 3) + 1}`}
+                  style={{ animation: 'fadeIn 0.4s ease both', animationDelay: `${i * 0.07}s` }}>
+                  <GalleryCard p={p} i={i} />
+                </div>
+              ))}
             </div>
           )}
         </div>
+        <style>{`
+          @media(max-width:900px){ .gallery-grid{ grid-template-columns:repeat(2,1fr)!important; } }
+          @media(max-width:560px){ .gallery-grid{ grid-template-columns:1fr!important; } }
+        `}</style>
       </section>
 
     </main>

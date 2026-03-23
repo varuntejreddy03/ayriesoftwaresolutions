@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import client from '../client.json'
 
 const links = [
   { to: '/',         label: 'Home' },
@@ -15,69 +14,72 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20)
+    const fn = () => setScrolled(window.scrollY > 80)
     window.addEventListener('scroll', fn)
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const navStyle = {
-    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-    background: scrolled ? 'rgba(255,255,255,0.88)' : 'transparent',
-    backdropFilter: scrolled ? 'blur(20px)' : 'none',
-    WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-    borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-    boxShadow: scrolled ? 'var(--shadow-sm)' : 'none',
-    transition: 'all 0.3s ease',
-  }
-
   return (
     <>
-      <nav style={navStyle}>
-        <div className="container flex-between" style={{ height: '68px' }}>
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+        background: scrolled ? 'rgba(13,13,13,0.92)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(249,115,22,0.2)' : '1px solid transparent',
+        transition: 'all 0.3s ease',
+      }}>
+        <div className="container flex-between" style={{ height: '70px' }}>
 
           {/* Logo */}
-          <NavLink to="/" style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-            {client.hasLogo
-              ? <img src={`/${client.logoFile}`} alt={client.businessName} style={{ height:'36px', width:'auto' }} />
-              : <>
-                  <span style={{ width:'34px', height:'34px', borderRadius:'9px', background:'var(--primary)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:800, fontSize:'16px' }}>
-                    {client.businessName.charAt(0)}
-                  </span>
-                  <span style={{ fontWeight:700, fontSize:'17px', color:'var(--text)', letterSpacing:'-0.02em' }}>
-                    {client.businessName}
-                  </span>
-                </>
-            }
+          <NavLink to="/" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src="/logo-removebg-preview.png" alt="Ayrie Software Solutions" style={{ height: '48px', width: 'auto', display: 'block', objectFit: 'contain' }} />
           </NavLink>
 
           {/* Desktop nav */}
-          <div className="hide-mobile" style={{ display:'flex', alignItems:'center', gap:'4px' }}>
+          <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             {links.map(l => (
-              <NavLink key={l.to} to={l.to} style={({ isActive }) => ({
-                padding:'8px 14px', borderRadius:'8px', fontSize:'14px', fontWeight:500,
-                color: isActive ? 'var(--primary)' : 'var(--text-2)',
-                background: isActive ? 'var(--primary-light)' : 'transparent',
-                transition:'all var(--transition)',
-              })}>
+              <NavLink key={l.to} to={l.to} end={l.to === '/'} style={({ isActive }) => ({
+                padding: '8px 14px', borderRadius: '8px', fontSize: '14px', fontWeight: 500,
+                color: isActive ? '#F97316' : '#9CA3AF',
+                borderBottom: isActive ? '2px solid #F97316' : '2px solid transparent',
+                transition: 'all 0.3s ease',
+              })}
+              onMouseEnter={e => { if (!e.currentTarget.style.borderBottomColor.includes('249')) e.currentTarget.style.color = '#F5F5F5' }}
+              onMouseLeave={e => { if (!e.currentTarget.style.borderBottomColor.includes('249')) e.currentTarget.style.color = '#9CA3AF' }}
+              >
                 {l.label}
               </NavLink>
             ))}
-            <NavLink to="/contact" className="btn btn-primary btn-sm" style={{ marginLeft:'12px' }}>
+            <NavLink to="/contact" style={{
+              marginLeft: '16px', padding: '12px 28px',
+              fontSize: '15px', fontWeight: 700,
+              fontFamily: 'Inter, sans-serif',
+              color: '#fff',
+              background: 'linear-gradient(135deg, #F97316, #D97706)',
+              borderRadius: '9999px',
+              display: 'inline-flex', alignItems: 'center',
+              transition: 'all 300ms ease',
+              boxShadow: '0 4px 14px rgba(249,115,22,0.3)',
+              border: 'none',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; e.currentTarget.style.boxShadow = '0 0 20px rgba(249,115,22,0.5)' }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(249,115,22,0.3)' }}
+            >
               Get in Touch
             </NavLink>
           </div>
 
           {/* Hamburger */}
-          <button onClick={() => setOpen(!open)} aria-label="Toggle menu"
-            style={{ display:'none', flexDirection:'column', gap:'5px', background:'none', border:'none', padding:'8px' }}
-            className="show-mobile">
-            {[0,1,2].map(i => (
+          <button onClick={() => setOpen(!open)} aria-label="Toggle menu" className="show-mobile"
+            style={{ background: 'none', border: 'none', padding: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            {[0, 1, 2].map(i => (
               <span key={i} style={{
-                display:'block', width:'22px', height:'2px',
-                background:'var(--text)', borderRadius:'2px', transition:'all 0.2s',
+                display: 'block', width: '22px', height: '2px',
+                background: '#F5F5F5', borderRadius: '2px', transition: 'all 0.25s',
                 transform: open
-                  ? i===0 ? 'rotate(45deg) translate(5px,5px)'
-                  : i===2 ? 'rotate(-45deg) translate(5px,-5px)'
+                  ? i === 0 ? 'rotate(45deg) translate(5px,5px)'
+                  : i === 2 ? 'rotate(-45deg) translate(5px,-5px)'
                   : 'scaleX(0)'
                   : 'none',
               }} />
@@ -89,36 +91,30 @@ export default function Navbar() {
       {/* Mobile drawer */}
       {open && (
         <div style={{
-          position:'fixed', top:'68px', left:0, right:0, bottom:0, zIndex:999,
-          background:'rgba(255,255,255,0.97)', backdropFilter:'blur(20px)',
-          padding:'24px', display:'flex', flexDirection:'column', gap:'8px',
-          animation:'fadeIn 0.2s ease',
+          position: 'fixed', top: '70px', left: 0, right: 0, bottom: 0, zIndex: 999,
+          background: 'rgba(13,13,13,0.97)', backdropFilter: 'blur(20px)',
+          padding: '24px', display: 'flex', flexDirection: 'column', gap: '8px',
+          animation: 'fadeIn 0.2s ease',
         }}>
           {links.map(l => (
-            <NavLink key={l.to} to={l.to} onClick={() => setOpen(false)}
+            <NavLink key={l.to} to={l.to} end={l.to === '/'} onClick={() => setOpen(false)}
               style={({ isActive }) => ({
-                padding:'14px 16px', borderRadius:'10px', fontSize:'16px', fontWeight:500,
-                color: isActive ? 'var(--primary)' : 'var(--text)',
-                background: isActive ? 'var(--primary-light)' : 'transparent',
+                padding: '14px 16px', borderRadius: '10px', fontSize: '16px', fontWeight: 500,
+                color: isActive ? '#F97316' : '#F5F5F5',
+                background: isActive ? 'rgba(249,115,22,0.1)' : 'transparent',
+                borderLeft: isActive ? '3px solid #F97316' : '3px solid transparent',
               })}>
               {l.label}
             </NavLink>
           ))}
           <NavLink to="/contact" onClick={() => setOpen(false)}
-            className="btn btn-primary" style={{ marginTop:'12px', justifyContent:'center' }}>
+            className="btn btn-primary" style={{ marginTop: '16px', justifyContent: 'center' }}>
             Get in Touch
           </NavLink>
         </div>
       )}
 
-      <div style={{ height:'68px' }} />
-
-      <style>{`
-        @media (max-width:768px) {
-          .show-mobile { display:flex !important; }
-          .hide-mobile { display:none !important; }
-        }
-      `}</style>
+      <div style={{ height: '70px' }} />
     </>
   )
 }
