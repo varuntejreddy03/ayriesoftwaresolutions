@@ -1,0 +1,32 @@
+{
+  "slug": "ayriesoftwaresolutions",
+  "businessName": "Ayrie Software Solutions",
+  "about": "Ayrie Software Solutions provides Salesforce, AI, Data, and Machine Learning based software solutions and custom development services.\r\nWe help businesses streamline their operations, build intelligent applications, and unlock insights from their data through modern, scalable technology.",
+  "services": [
+    "Salesforce consulting and implementation",
+    "Custom Salesforce development",
+    "AI-powered application development",
+    "Data engineering and data analytics",
+    "Machine learning model development and deployment",
+    "Software product development and maintenance",
+    "For services and about business, better use AI for matter related to Salesforce, AI and ML , data services"
+  ],
+  "phone": "9550260709",
+  "email": "careers@ayriesoft.com",
+  "address": "102, 2nd cross, 5th main, NRI Layout, Ramamurthy Nagar, Bangalore – 560016",
+  "facebook": "",
+  "instagram": "",
+  "linkedin": "https://www.linkedin.com/company/ayriesoft/posts/?feedView=all",
+  "hoursMF": "9:00 AM – 7:00 PM",
+  "hoursSat": "Holiday",
+  "hoursSun": "",
+  "primaryColor": "#ff8c00",
+  "theme": "light",
+  "hasLogo": true,
+  "hasHeroImage": true,
+  "hasAboutImage": false,
+  "galleryImages": [],
+  "submittedAt": "2026-03-23T15:19:40.109Z",
+  "logoFile": "logo.jpeg",
+  "heroImageFile": "hero.jpeg"
+}
