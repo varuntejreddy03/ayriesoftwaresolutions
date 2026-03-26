@@ -40,12 +40,12 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Hide internal component scrollbars site-wide while preserving page scroll */
-main * {
+/* Hide nested component scrollbars site-wide while preserving page scroll */
+*:not(html):not(body) {
   scrollbar-width: none;
 }
 
-main *::-webkit-scrollbar {
+*:not(html):not(body)::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
@@ -191,10 +191,48 @@ h4 { font-size: 20px; }
 }
 
 /* ── FOOTER ── */
+.footer-heading {
+  color: var(--text-primary);
+  margin-bottom: 18px;
+}
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.footer-link:hover {
+  color: var(--orange);
+  transform: translateX(2px);
+}
+
+.footer-social {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: var(--transition);
+}
+
+.footer-social:hover {
+  transform: translateY(-2px);
+  color: var(--orange);
+  box-shadow: 0 0 20px var(--orange-glow);
+}
+
 @media (max-width: 768px) {
   .footer-grid { grid-template-columns: 1fr !important; }
   .footer-col { margin-bottom: 32px; width: 100%; }
   .footer-bottom { flex-direction: column !important; text-align: center; gap: 16px; }
+  .footer-bottom { margin-top: 24px !important; }
 }
 
 /* ── ANIMATIONS ── */

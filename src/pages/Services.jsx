@@ -108,6 +108,13 @@ export default function Services() {
 
             <div className="drift-in" ref={addToRefs} style={{ transitionDelay: '0.1s' }}>
               <div className="premium-card" style={{ background: 'linear-gradient(180deg, rgba(255,85,0,0.12), rgba(255,255,255,0.02))' }}>
+                <div style={{ borderRadius: 'var(--radius-sm)', overflow: 'hidden', border: '1px solid var(--glass-border)', marginBottom: '16px' }}>
+                  <img
+                    src="/home_hero_tech_abstract_1774505517038.png"
+                    alt="Service architecture visual"
+                    style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }}
+                  />
+                </div>
                 <p className="section-label" style={{ marginBottom: '14px' }}>Service Architecture</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                   <div style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '10px' }}>
