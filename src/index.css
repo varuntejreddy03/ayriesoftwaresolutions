@@ -8,7 +8,7 @@
   --glass-border: rgba(255, 255, 255, 0.08);
   --divider: rgba(255, 255, 255, 0.05);
   
-  --font-display: 'Syne', sans-serif;
+  --font-display: 'Sora', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
   
   --radius-sm: 8px;
@@ -40,10 +40,21 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Hide internal component scrollbars site-wide while preserving page scroll */
+main * {
+  scrollbar-width: none;
+}
+
+main *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 /* ── TYPOGRAPHY SCALE ── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  line-height: 1.1;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
   font-weight: 800;
   margin: 0;
 }

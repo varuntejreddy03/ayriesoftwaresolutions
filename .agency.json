@@ -2,9 +2,10 @@
   "slug": "ayriesoftwaresolutions",
   "businessName": "Ayrie Software Solutions",
   "framework": "vite",
-  "status": "preview",
+  "status": "live",
   "githubRepo": "https://github.com/varuntejreddy03/ayriesoftwaresolutions",
   "previewUrl": "https://ayriesoftwaresolutions-4oyg91d5v-medrag608-8919s-projects.vercel.app",
   "domain": null,
-  "createdAt": "2026-03-23T15:19:40.204Z"
+  "createdAt": "2026-03-23T15:19:40.204Z",
+  "productionUrl": "https://ayriesoftwaresolutions-1jnd67dsw-medrag608-8919s-projects.vercel.app"
 }

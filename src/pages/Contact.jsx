@@ -100,10 +100,6 @@ export default function Contact() {
                   </div>
                 </div>
                 
-                <div style={{ marginTop: '60px', padding: '40px', background: 'rgba(255,85,0,0.04)', border: '1px solid var(--orange)', borderRadius: 'var(--radius-md)' }}>
-                   <p className="body-sm" style={{ opacity: 0.8, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Global HQ Bangalore: Active</p>
-                   <p className="body-sm" style={{ opacity: 0.6, marginTop: '8px', fontSize: '11px' }}>12.9716° N, 77.5946° E</p>
-                </div>
             </div>
 
           </div>
