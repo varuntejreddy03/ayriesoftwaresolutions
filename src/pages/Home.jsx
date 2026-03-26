@@ -1,311 +1,298 @@
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
-import useReveal from '../hooks/useReveal'
 
-const SERVICES = [
-  { img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80', title: 'Salesforce Consulting & Implementation', desc: 'End-to-end Salesforce strategy, setup, and rollout tailored to your business processes.' },
-  { img: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80', title: 'AI-Powered Application Development', desc: 'Intelligent apps powered by LLMs, computer vision, and predictive models.' },
-  { img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80', title: 'Data Engineering & Analytics', desc: 'Pipelines, warehouses, and dashboards that turn raw data into business insight.' },
-  { img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80', title: 'Custom Salesforce Development', desc: 'Bespoke Apex, LWC, and Flow solutions that extend Salesforce beyond its defaults.' },
-  { img: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80', title: 'ML Model Development & Deployment', desc: 'Production-grade machine learning models built, trained, and deployed at scale.' },
-  { img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80', title: 'Software Product Development', desc: 'Full-cycle product engineering — from architecture to deployment and maintenance.' },
-  { img: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80', title: 'AI for Salesforce & Data Services', desc: 'Embed AI/ML intelligence directly into your Salesforce ecosystem and data stack.' },
+const FEATURES_WHY = [
+  { title: 'Fast & Efficient', desc: 'Solutions delivered quickly with optimized workflows' },
+  { title: 'Results Driven', desc: 'Engineering that directly improves your revenue' },
+  { title: 'Always Available', desc: 'Round-the-clock support and system monitoring' }
 ]
 
-const STATS = [
-  { n: '100+', l: 'Happy Clients' },
-  { n: '5★',   l: 'Average Rating' },
-  { n: '24h',  l: 'Response Time' },
-  { n: '100%', l: 'Satisfaction' },
+const SERVICES_CARDS = [
+  {
+    title: 'AI & Machine Learning',
+    desc: 'Custom AI model integration, image & video intelligence, and smart forecasting systems.',
+    features: ['Predictive Analytics', 'Natural Language Processing', 'Image & Video Intelligence']
+  },
+  {
+    title: 'Data Engineering',
+    desc: 'Reliable data storage, management, and live data pipelines for instant business decisions.',
+    features: ['Real-time Data Pipelines', 'Cloud Data Warehousing', 'BI Dashboards']
+  },
+  {
+    title: 'Salesforce Solutions',
+    desc: 'End-to-end Salesforce setup, optimization, and CRM transformation for your team.',
+    features: ['CRM Customization', 'Marketing Automation', 'Einstein AI Integration']
+  }
 ]
 
 const TESTIMONIALS = [
-  { quote: 'Absolutely outstanding service. They exceeded every expectation and delivered on time.', name: 'Sarah M.', role: 'Business Owner' },
-  { quote: 'Professional, responsive, and genuinely cares about results. Highly recommended!',       name: 'James K.', role: 'Entrepreneur' },
-  { quote: 'The best decision we made was working with this team. Quality is unmatched.',            name: 'Priya R.', role: 'CEO' },
+  { name: 'Sameer Mehra', role: 'CTO, TechFlow', quote: 'The Salesforce integration completely transformed how our sales team operates. Seamless and incredibly fast.' },
+  { name: 'Aditi Rao', role: 'Operations Head', quote: 'Ayrie\'s AI solutions provided us with insights we didn\'t think were possible with our current data.' },
+  { name: 'Jason Miller', role: 'Founder, Scaleup', quote: 'The Data engineering team at Ayrie is world-class. Our pipelines are now faster and more reliable.' }
 ]
 
-function StatCounter({ target }) {
-  const [val, setVal] = useState(0)
-  const ref = useRef(null)
-  const started = useRef(false)
+const PROCESS_STEPS = [
+  { step: '01', title: 'Discover', desc: 'We learn your business goals and challenges' },
+  { step: '02', title: 'Design', desc: 'We plan the right tech solution for you' },
+  { step: '03', title: 'Build', desc: 'We develop, test, and refine everything' },
+  { step: '04', title: 'Deliver', desc: 'We launch, support, and scale with you' }
+]
+
+const IMPACT_NUMS = [
+  { value: '16+', label: 'Happy Clients' },
+  { value: '50+', label: 'Projects Delivered' },
+  { value: '100%', label: 'Satisfaction Rate' },
+  { value: '3+', label: 'Years of Excellence' }
+]
+
+function CountUp({ end, suffix = '' }) {
+  const [count, setCount] = useState(0)
+  const [hasScrolled, setHasScrolled] = useState(false)
+  const ref = useRef()
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const num = parseInt(target.replace(/\D/g, ''))
-    if (!num) return
-    const observer = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !started.current) {
-        started.current = true
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !hasScrolled) {
+        setHasScrolled(true)
         let start = 0
-        const step = Math.ceil(num / 50)
+        const duration = 2000
+        const objEnd = parseInt(end)
         const timer = setInterval(() => {
-          start += step
-          if (start >= num) { setVal(num); clearInterval(timer) }
-          else setVal(start)
-        }, 30)
+          start += Math.ceil(objEnd / 50)
+          if (start >= objEnd) {
+            setCount(end)
+            clearInterval(timer)
+          } else {
+            setCount(start + (suffix || ''))
+          }
+        }, 40)
       }
-    }, { threshold: 0.5 })
-    observer.observe(el)
+    }, { threshold: 0.1 })
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
-  }, [target])
+  }, [end, hasScrolled, suffix])
 
-  const suffix = target.replace(/[0-9]/g, '')
-  const num = parseInt(target.replace(/\D/g, ''))
-  return <span ref={ref}>{num ? val + suffix : target}</span>
-}
-
-// CSS-only floating particles
-function ServiceCard({ s, i }) {
-  const [hovered, setHovered] = useState(false)
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className={`reveal reveal-delay-${(i % 3) + 1}`}
-      style={{
-        borderRadius: '20px', overflow: 'hidden',
-        background: '#161616',
-        border: `1px solid ${hovered ? 'rgba(249,115,22,0.45)' : 'rgba(249,115,22,0.12)'}`,
-        transition: 'all 0.3s ease',
-        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
-        boxShadow: hovered ? '0 0 36px rgba(249,115,22,0.14)' : 'none',
-        display: 'flex', flexDirection: 'column',
-      }}
-    >
-      {/* Image */}
-      <div style={{ height: '180px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
-        <img
-          src={s.img}
-          alt={s.title}
-          style={{
-            width: '100%', height: '100%', objectFit: 'cover',
-            transition: 'transform 0.4s ease',
-            transform: hovered ? 'scale(1.07)' : 'scale(1)',
-          }}
-        />
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: hovered
-            ? 'linear-gradient(160deg, rgba(249,115,22,0.35) 0%, rgba(13,13,13,0.5) 100%)'
-            : 'linear-gradient(to top, rgba(13,13,13,0.7) 0%, transparent 60%)',
-          transition: 'background 0.3s ease',
-        }} />
-      </div>
-      {/* Content */}
-      <div style={{ padding: '22px 24px 24px', display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
-        <h3 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '16px', color: '#F5F5F5', lineHeight: 1.35 }}>{s.title}</h3>
-        <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#9CA3AF', flex: 1 }}>{s.desc}</p>
-        <Link to="/services" style={{
-          fontSize: '13px', fontWeight: 600, color: '#F97316',
-          display: 'inline-flex', alignItems: 'center', gap: '4px',
-          marginTop: '4px', transition: 'gap 0.2s',
-        }}
-          onMouseEnter={e => e.currentTarget.style.gap = '8px'}
-          onMouseLeave={e => e.currentTarget.style.gap = '4px'}
-        >
-          Learn more →
-        </Link>
-      </div>
-    </div>
-  )
-}
-
-// CSS-only floating particles
-function Particles() {
-  const particles = Array.from({ length: 12 }, (_, i) => ({
-    size: 2 + (i % 4),
-    x: 5 + (i * 8.3) % 90,
-    y: 10 + (i * 7.7) % 80,
-    dur: 4 + (i % 5),
-    delay: -(i * 0.7),
-  }))
-  return (
-    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-      {particles.map((p, i) => (
-        <div key={i} style={{
-          position: 'absolute',
-          left: `${p.x}%`, top: `${p.y}%`,
-          width: `${p.size}px`, height: `${p.size}px`,
-          borderRadius: '50%',
-          background: i % 3 === 0 ? '#F97316' : i % 3 === 1 ? '#FBBF24' : 'rgba(249,115,22,0.3)',
-          animation: `float ${p.dur}s ease-in-out ${p.delay}s infinite`,
-          opacity: 0.4 + (i % 3) * 0.2,
-        }} />
-      ))}
-      {/* Geometric shapes */}
-      <div style={{ position: 'absolute', top: '15%', right: '8%', width: '80px', height: '80px', border: '1px solid rgba(249,115,22,0.15)', borderRadius: '16px', transform: 'rotate(15deg)', animation: 'float 6s ease-in-out -2s infinite' }} />
-      <div style={{ position: 'absolute', bottom: '20%', left: '6%', width: '50px', height: '50px', border: '1px solid rgba(251,191,36,0.15)', borderRadius: '50%', animation: 'float 5s ease-in-out -1s infinite' }} />
-      <div style={{ position: 'absolute', top: '40%', right: '15%', width: '30px', height: '30px', background: 'rgba(249,115,22,0.06)', borderRadius: '6px', transform: 'rotate(30deg)', animation: 'float 7s ease-in-out -3s infinite' }} />
-    </div>
-  )
+  return <span ref={ref}>{count}</span>
 }
 
 export default function Home() {
-  const revealRef = useReveal()
+  const [loaded, setLoaded] = useState(false)
+  const sectionsRef = useRef([])
+
+  useEffect(() => {
+    setLoaded(true)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible')
+      })
+    }, { threshold: 0.1 })
+    sectionsRef.current.forEach(s => s && observer.observe(s))
+    return () => observer.disconnect()
+  }, [])
+
+  const addToRefs = (el) => {
+    if (el && !sectionsRef.current.includes(el)) sectionsRef.current.push(el)
+  }
 
   return (
-    <main ref={revealRef}>
-
+    <main className={loaded ? 'loading-ready' : ''}>
+      
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', background: '#0D0D0D' }}>
-        {/* Mesh gradient */}
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(249,115,22,0.18) 0%, transparent 70%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 40% 40% at 80% 80%, rgba(217,119,6,0.08) 0%, transparent 60%)', pointerEvents: 'none' }} />
-        <Particles />
+      <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '100px' }}>
+        <div className="hero-glow" style={{ position: 'absolute', top: 0, right: 0, width: '40vw', height: '40vw', background: 'radial-gradient(circle, var(--orange-glow) 0%, transparent 70%)', opacity: 0.4, pointerEvents: 'none' }} />
+        <div className="section-container">
+          <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '60px', alignItems: 'center' }}>
+            
+            <div className="drift-in" ref={addToRefs} style={{ order: 2 }}>
+               <div style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
+                  <img 
+                    src="/home_hero_tech_abstract_1774505517038.png" 
+                    alt="Tech Abstract" 
+                    style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }} 
+                  />
+               </div>
+            </div>
 
-        <div className="container" style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '80px 24px' }}>
-          {/* Badge */}
-          <div className="animate-fade-up" style={{ marginBottom: '28px' }}>
-            <span className="badge animate-pulse-badge">✦ Trusted by 100+ Clients</span>
-          </div>
-
-          {/* H1 */}
-          <h1 className="display animate-fade-up delay-1" style={{ marginBottom: '24px', maxWidth: '820px', margin: '0 auto 24px' }}>
-            Building the Future with{' '}
-            <span className="gradient-text">Salesforce, AI & Data</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p className="body-lg animate-fade-up delay-2" style={{ maxWidth: '560px', margin: '0 auto 40px', fontSize: '20px' }}>
-            We transform enterprises with intelligent Salesforce solutions, AI-powered applications, and data-driven insights.
-          </p>
-
-          {/* CTAs */}
-          <div className="animate-fade-up delay-3" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '40px' }}>
-            <Link to="/contact" className="btn btn-primary btn-lg">Get Started Today →</Link>
-            <Link to="/services" className="btn btn-ghost btn-lg">View Our Services</Link>
-          </div>
-
-          {/* Trust bar */}
-          <div className="animate-fade-up delay-4" style={{ display: 'flex', gap: '28px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {['Trusted & Reliable', 'Fast Delivery', 'Quality Guaranteed'].map((t, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '7px', fontSize: '13px', color: '#9CA3AF', fontWeight: 500 }}>
-                <span style={{ color: '#F97316', fontWeight: 700 }}>✓</span> {t}
+            <div className="drift-in" ref={addToRefs} style={{ order: 1 }}>
+              <div style={{ display: 'inline-flex', padding: '6px 16px', borderRadius: '100px', border: '1px solid var(--orange)', background: 'rgba(255,85,0,0.1)', color: 'var(--orange)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '24px' }}>
+                SALESFORCE · AI · DATA
               </div>
-            ))}
+              <h1 className="hero-headline-new" style={{ marginBottom: '24px' }}>
+                Smarter Software.<br />
+                <span style={{ color: 'var(--orange)' }}>Faster Business.</span>
+              </h1>
+              <p className="body-md" style={{ maxWidth: '600px', marginBottom: '40px', color: 'var(--text-secondary)' }}>
+                We help ambitious businesses grow with custom AI, Salesforce, and Data solutions — built to scale from day one.
+              </p>
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                <Link to="/contact" className="btn btn-primary">Start a Project</Link>
+                <Link to="/services" className="btn btn-ghost">Our Services</Link>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* ── STATS BAR ── */}
-      <section style={{ background: '#161616', borderTop: '1px solid rgba(249,115,22,0.1)', borderBottom: '1px solid rgba(249,115,22,0.1)', padding: '48px 0' }}>
-        <div className="container">
-          <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '0' }}>
-            {STATS.map((s, i) => (
-              <div key={i} style={{
-                textAlign: 'center', padding: '16px 24px',
-                borderRight: i < 3 ? '1px solid rgba(249,115,22,0.12)' : 'none',
-              }}>
-                <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: 'clamp(32px,4vw,52px)', fontWeight: 800, color: '#F97316', lineHeight: 1, marginBottom: '8px' }}>
-                  <StatCounter target={s.n} />
+      {/* ── SERVICES TICKER ── */}
+      <section style={{ borderTop: '1px solid var(--divider)', borderBottom: '1px solid var(--divider)', background: 'rgba(255,255,255,0.01)' }}>
+        <div style={{ padding: '60px 0', textAlign: 'center' }}>
+          <p className="section-label">Expertise in the leading digital stacks</p>
+          <div className="marquee-container">
+             <div className="marquee-content">
+                {['AI & MACHINE LEARNING', 'DATA ENGINEERING', 'SALESFORCE SOLUTIONS', 'CLOUD TRANSFORMATION', 'CRM OPTIMIZATION'].map((s, i) => (
+                  <span key={i} className="marquee-logo">{s}</span>
+                ))}
+                {['AI & MACHINE LEARNING', 'DATA ENGINEERING', 'SALESFORCE SOLUTIONS', 'CLOUD TRANSFORMATION', 'CRM OPTIMIZATION'].map((s, i) => (
+                  <span key={i+'_clone'} className="marquee-logo">{s}</span>
+                ))}
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── OUR SERVICES ── */}
+      <section id="services">
+        <div className="section-container">
+          <div className="drift-in" ref={addToRefs} style={{ marginBottom: '60px' }}>
+            <span className="section-label">What We Do</span>
+            <h2 className="section-title">Our Services</h2>
+          </div>
+
+          <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px' }}>
+             {SERVICES_CARDS.map((s, i) => (
+               <div key={i} className="premium-card drift-in" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s` }}>
+                  <h3 style={{ marginBottom: '16px' }}>{s.title}</h3>
+                  <p className="body-sm" style={{ marginBottom: '24px', opacity: 0.7 }}>{s.desc}</p>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {s.features.map((f, fi) => (
+                      <li key={fi} style={{ display: 'flex', gap: '10px', fontSize: '13px', alignItems: 'center' }}>
+                        <div style={{ width: '4px', height: '4px', background: 'var(--orange)', borderRadius: '50%' }} />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to="/services" style={{ color: 'var(--orange)', textDecoration: 'none', fontWeight: 800, fontSize: '13px', textTransform: 'uppercase' }}>Learn More →</Link>
+               </div>
+             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW WE WORK ── */}
+      <section style={{ borderTop: '1px solid var(--divider)', background: 'rgba(255,255,255,0.01)' }}>
+        <div className="section-container">
+          <div className="drift-in" ref={addToRefs} style={{ marginBottom: '80px', textAlign: 'center' }}>
+            <span className="section-label">Our Process</span>
+            <h2 className="section-title">How We Work</h2>
+          </div>
+
+          <div className="process-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', position: 'relative' }}>
+             {PROCESS_STEPS.map((p, i) => (
+               <div key={i} className="process-step drift-in" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s`, position: 'relative' }}>
+                  <div style={{ width: '40px', height: '40px', background: 'var(--orange)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, marginBottom: '24px' }}>{p.step}</div>
+                  <h4 style={{ marginBottom: '12px' }}>{p.title}</h4>
+                  <p className="body-sm" style={{ opacity: 0.7 }}>{p.desc}</p>
+               </div>
+             ))}
+          </div>
+          <style dangerouslySetInnerHTML={{ __html: `
+            @media (max-width: 768px) {
+              .process-grid { grid-template-columns: 1fr !important; gap: 0 !important; }
+              .process-step { padding: 24px 0; border-left: 2px dotted var(--orange); padding-left: 24px; margin-left: 12px; }
+              .process-step div { position: absolute; left: -21px; top: 24px; margin:0 !important; }
+            }
+          `}} />
+        </div>
+      </section>
+
+      {/* ── WHY CHOOSE US ── */}
+      <section>
+        <div className="section-container">
+          <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+             <div className="drift-in" ref={addToRefs}>
+                <h2 className="section-title" style={{ marginBottom: '32px' }}>Why Choose Us</h2>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                   <span style={{ fontSize: '80px', fontWeight: 800, color: 'var(--orange)', fontFamily: 'var(--font-display)', lineHeight: 0.8 }}>16+</span>
+                   <span className="section-label" style={{ margin: 0 }}>Global Clients</span>
                 </div>
-                <div style={{ fontSize: '14px', color: '#9CA3AF' }}>{s.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <style>{`@media(max-width:640px){.stats-grid{grid-template-columns:repeat(2,1fr)!important}.stats-grid>div{border-right:none!important;border-bottom:1px solid rgba(249,115,22,0.12);}}`}</style>
-      </section>
-
-      {/* ── SERVICES ── */}
-      <section className="section">
-        <div className="container">
-          <div className="reveal" style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <p className="label" style={{ marginBottom: '12px' }}>What We Do</p>
-            <h2 className="heading-1" style={{ marginBottom: '16px' }}>Our Services</h2>
-            <p className="body-lg" style={{ maxWidth: '480px', margin: '0 auto' }}>Everything you need, delivered with expertise and care.</p>
-          </div>
-          <div className="services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '20px' }}>
-            {SERVICES.map((s, i) => (
-              <ServiceCard key={i} s={s} i={i} />
-            ))}
-          </div>
-          <style>{`@media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr)!important}}@media(max-width:560px){.services-grid{grid-template-columns:1fr!important}}`}</style>
-        </div>
-      </section>
-
-      {/* ── WHY US ── */}
-      <section className="section" style={{ background: '#111', borderTop: '1px solid rgba(249,115,22,0.08)', borderBottom: '1px solid rgba(249,115,22,0.08)' }}>
-        <div className="container">
-          <div className="why-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
-            <div className="reveal">
-              <p className="label" style={{ marginBottom: '12px' }}>Why Choose Us</p>
-              <h2 className="heading-1" style={{ marginBottom: '24px' }}>
-                We deliver results,{' '}
-                <span className="gradient-text">not just promises</span>
-              </h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '32px' }}>
-                {[
-                  { icon: '⚡', title: 'Fast & Efficient',  desc: 'We respect your time and deliver on schedule.' },
-                  { icon: '🎯', title: 'Results Focused',   desc: 'Every decision is driven by your goals.' },
-                  { icon: '💛', title: 'Always Available',  desc: 'Dedicated support whenever you need us.' },
-                ].map((f, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <div className="icon-box" style={{ flexShrink: 0 }}>{f.icon}</div>
-                    <div>
-                      <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, color: '#F5F5F5', marginBottom: '4px', fontSize: '16px' }}>{f.title}</p>
-                      <p className="body-md">{f.desc}</p>
-                    </div>
+             </div>
+             <div className="drift-in" ref={addToRefs} style={{ transitionDelay: '0.2s' }}>
+                {FEATURES_WHY.map((f, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '20px', marginBottom: i < 2 ? '32px' : '0' }}>
+                     <div style={{ flexShrink: 0, width: '32px', height: '32px', background: 'rgba(255,85,0,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--orange)' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                     </div>
+                     <div>
+                        <h4 style={{ marginBottom: '4px' }}>{f.title}</h4>
+                        <p className="body-sm" style={{ opacity: 0.7 }}>{f.desc}</p>
+                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-
-            <div className="reveal reveal-delay-2" style={{ position: 'relative', height: '380px' }}>
-              {/* Trusted card */}
-              <div className="card-glass" style={{ position: 'absolute', top: 0, left: 0, width: '88%', padding: '32px' }}>
-                <div style={{ fontSize: '32px', marginBottom: '14px' }}>🏆</div>
-                <h3 className="heading-3" style={{ marginBottom: '8px' }}>Trusted by Clients</h3>
-                <p className="body-md" style={{ marginBottom: '20px' }}>Join 100+ satisfied clients who chose Ayrie Software Solutions.</p>
-                <div style={{ display: 'flex' }}>
-                  {['🧑','👩','👨','🧑','👩'].map((e, i) => (
-                    <div key={i} style={{ width: '34px', height: '34px', borderRadius: '50%', background: `hsl(${i * 40},50%,25%)`, border: '2px solid #161616', marginLeft: i > 0 ? '-8px' : '0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>{e}</div>
-                  ))}
-                  <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#F97316', border: '2px solid #161616', marginLeft: '-8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, color: '#fff' }}>+95</div>
-                </div>
-              </div>
-              {/* Rating card */}
-              <div className="card-glass" style={{ position: 'absolute', bottom: 0, right: 0, width: '52%', padding: '20px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ fontSize: '28px' }}>⭐</span>
-                  <div>
-                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '22px', color: '#F97316' }}>5.0</p>
-                    <p style={{ fontSize: '12px', color: '#9CA3AF' }}>Average Rating</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+             </div>
           </div>
         </div>
-        <style>{`@media(max-width:768px){.why-grid{grid-template-columns:1fr!important;gap:40px!important}.why-grid>div:last-child{height:auto!important}}`}</style>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
-      <section className="section">
-        <div className="container">
-          <div className="reveal" style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <p className="label" style={{ marginBottom: '12px', letterSpacing: '0.15em' }}>TESTIMONIALS</p>
-            <h2 className="heading-1">What Clients Say</h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '24px' }}>
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className={`card-glass reveal reveal-delay-${i + 1}`} style={{ padding: '32px' }}>
-                <div style={{ color: '#F97316', fontSize: '18px', letterSpacing: '3px', marginBottom: '16px' }}>★★★★★</div>
-                <p style={{ fontSize: '15px', lineHeight: 1.8, color: '#D1D5DB', fontStyle: 'italic', marginBottom: '24px' }}>"{t.quote}"</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, color: '#F97316', fontSize: '16px' }}>
-                    {t.name.charAt(0)}
+      {/* ── NUMBERS / IMPACT STRIP ── */}
+      <section style={{ background: '#111', borderTop: '1px solid var(--divider)', borderBottom: '1px solid var(--divider)' }}>
+        <div className="section-container" style={{ padding: '60px 24px' }}>
+          <div className="impact-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '40px', textAlign: 'center' }}>
+             {IMPACT_NUMS.map((n, i) => (
+               <div key={i} className="drift-in" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s` }}>
+                  <div style={{ fontSize: '56px', fontWeight: 800, color: 'var(--orange)', fontFamily: 'var(--font-display)', marginBottom: '4px' }}>
+                    <CountUp end={n.value} suffix={n.value.includes('+') ? '+' : (n.value.includes('%') ? '%' : '')} />
                   </div>
+                  <p className="body-sm" style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.6 }}>{n.label}</p>
+               </div>
+             ))}
+          </div>
+          <style dangerouslySetInnerHTML={{ __html: `
+            @media (max-width: 768px) {
+              .impact-grid { grid-template-columns: 1fr 1fr !important; }
+              .impact-grid div div { font-size: 40px !important; }
+              .impact-grid div p { font-size: 12px !important; }
+            }
+          `}} />
+        </div>
+      </section>
+
+      {/* ── CLIENT REVIEWS ── */}
+      <section>
+        <div className="section-container">
+          <div className="drift-in" ref={addToRefs} style={{ marginBottom: '60px', textAlign: 'center' }}>
+            <span className="section-label">Reviews</span>
+            <h2 className="section-title">What Clients Say</h2>
+          </div>
+          <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+             {TESTIMONIALS.map((t, i) => (
+               <div key={i} className="premium-card drift-in" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s` }}>
+                  <p className="body-md" style={{ fontStyle: 'italic', marginBottom: '24px' }}>"{t.quote}"</p>
                   <div>
-                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, fontSize: '14px', color: '#F5F5F5' }}>{t.name}</p>
-                    <p style={{ fontSize: '12px', color: '#9CA3AF' }}>{t.role}</p>
+                    <div style={{ fontWeight: 800 }}>{t.name}</div>
+                    <div style={{ color: 'var(--orange)', fontSize: '12px' }}>{t.role}</div>
                   </div>
-                </div>
-              </div>
-            ))}
+               </div>
+             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── CTA BANNER ── */}
+      <section style={{ paddingBottom: '80px' }}>
+        <div className="section-container">
+          <div className="premium-card drift-in" ref={addToRefs} style={{ background: 'var(--orange)', border: 'none', textAlign: 'center', padding: '60px 24px' }}>
+             <h2 className="section-title" style={{ color: '#fff', marginBottom: '24px' }}>Ready to grow?</h2>
+             <p className="body-lg" style={{ color: '#fff', marginBottom: '32px', maxWidth: '600px', margin: '0 auto 32px' }}>
+               Let's talk about what Ayrie can build for you.
+             </p>
+             <Link to="/contact" className="btn btn-ghost" style={{ borderColor: '#fff' }}>Book a Free Call</Link>
+          </div>
+          <style dangerouslySetInnerHTML={{ __html: `
+            @media (max-width: 768px) {
+              .hero-headline-new { font-size: 36px !important; }
+            }
+          `}} />
         </div>
       </section>
 
