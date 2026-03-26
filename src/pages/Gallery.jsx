@@ -55,7 +55,7 @@ export default function Gallery() {
   return (
     <main className={loaded ? 'loading-ready' : ''}>
       {/* ── HERO ── */}
-      <section className="hero-section" style={{ minHeight: '62vh', display: 'flex', alignItems: 'center' }}>
+      <section className="hero-section" style={{ minHeight: '62vh', display: 'flex', alignItems: 'center', paddingTop: '150px' }}>
         <div className="section-container">
           <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '40px', alignItems: 'center' }}>
             <div className="drift-in" ref={addToRefs}>
