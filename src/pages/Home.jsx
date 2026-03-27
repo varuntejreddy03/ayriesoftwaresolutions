@@ -117,9 +117,14 @@ export default function Home() {
               <div style={{ display: 'inline-flex', padding: '6px 16px', borderRadius: '100px', border: '1px solid var(--orange)', background: 'rgba(255,85,0,0.1)', color: 'var(--orange)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '24px' }}>
                 SALESFORCE · AI · DATA
               </div>
-              <h1 className="hero-headline-new" style={{ marginBottom: '24px' }}>
-                Smarter Software.<br />
-                <span style={{ color: 'var(--orange)' }}>Faster Business.</span>
+              <h1 className="hero-headline-new">
+                {["Smarter", "Software."].map((w, i) => (
+                  <span key={i} className="word-reveal" style={{ animationDelay: `${i * 0.15}s` }}>{w}&nbsp;</span>
+                ))}
+                <br />
+                {["Faster", "Business."].map((w, i) => (
+                  <span key={i} className="word-reveal word-reveal-orange" style={{ animationDelay: `${(i + 2) * 0.15}s` }}>{w}&nbsp;</span>
+                ))}
               </h1>
               <p className="body-md" style={{ maxWidth: '600px', marginBottom: '40px', color: 'var(--text-secondary)' }}>
                 We help ambitious businesses grow with custom AI, Salesforce, and Data solutions — built to scale from day one.

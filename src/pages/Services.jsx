@@ -99,7 +99,7 @@ export default function Services() {
         <div className="section-container">
           <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '42px', alignItems: 'center' }}>
             <div className="drift-in" ref={addToRefs}>
-              <span className="section-label">Solutions</span>
+              <span className="section-label">Our Services</span>
               <h1 className="hero-headline-new" style={{ marginBottom: '24px' }}>Services Built For Scalable Growth</h1>
               <p className="body-lg" style={{ maxWidth: '760px', opacity: 0.86 }}>
                 We combine Salesforce expertise, AI execution, and data engineering to help enterprises move from fragmented systems to connected performance.

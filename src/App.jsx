@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
+import BackButton from './components/BackButton.jsx'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import Services from './pages/Services.jsx'
@@ -21,7 +22,8 @@ export default function App() {
     <>
       <ScrollToTop />
       <Navbar />
-      <div key={location.pathname} style={{ animation: 'fadeIn 0.35s ease both' }}>
+      <div key={location.pathname} style={{ animation: 'fadeIn 0.35s ease both', position: 'relative' }}>
+        <BackButton />
         <Routes location={location}>
           <Route path="/"         element={<Home />} />
           <Route path="/about"    element={<About />} />
